@@ -1,0 +1,81 @@
+/* pages/report/report.wxss */
+.page { padding-bottom: 40rpx; }
+
+.empty { text-align: center; padding: 140rpx 0; }
+.empty-emoji { font-size: 80rpx; margin-bottom: 20rpx; }
+
+/* 总览 */
+.hero { text-align: center; padding: 40rpx 24rpx 34rpx; margin-top: 24rpx; }
+.hero-rate { font-size: 96rpx; font-weight: 700; color: #07c160; line-height: 1; }
+.hero-pct { font-size: 40rpx; font-weight: 500; }
+.hero-level {
+  display: inline-block;
+  font-size: 24rpx;
+  color: #07c160;
+  background: #f0fff5;
+  border-radius: 30rpx;
+  padding: 6rpx 24rpx;
+  margin: 16rpx 0 14rpx;
+}
+.hero-meta { font-size: 24rpx; color: #999; }
+.hero-none { font-size: 40rpx; font-weight: 600; color: #6b716d; padding: 12rpx 0 8rpx; }
+.hero-self,
+.hero-legacy {
+  margin: 18rpx auto 0;
+  max-width: 620rpx;
+  padding: 12rpx 20rpx;
+  font-size: 22rpx;
+  line-height: 1.5;
+  text-align: center;
+  color: #8a908c;
+  background: #f6f8f7;
+  border-radius: 12rpx;
+}
+.hero-legacy { color: #a06a12; background: #fff8e8; }
+
+/* 区块标题 */
+.sec-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 30rpx 44rpx 4rpx;
+}
+.sec-title { font-size: 28rpx; font-weight: 600; color: #333; }
+
+/* 薄弱点 */
+.weak { padding: 22rpx 24rpx; }
+.weak-top { display: flex; justify-content: space-between; align-items: baseline; }
+.weak-title { font-size: 28rpx; font-weight: 600; color: #222; }
+.weak-times { font-size: 22rpx; color: #e54d42; }
+.weak-sample { font-size: 24rpx; color: #888; margin: 10rpx 0 16rpx; line-height: 1.6; }
+.weak-ops { display: flex; gap: 16rpx; }
+.op {
+  flex: 1;
+  text-align: center;
+  font-size: 24rpx;
+  padding: 12rpx 0;
+  border-radius: 30rpx;
+  background: #07c160;
+  color: #fff;
+}
+.op.ghost { background: #fff; color: #07c160; border: 1rpx solid #07c160; }
+
+/* 单元条 */
+.unit-row { display: flex; align-items: center; padding: 14rpx 0; }
+.unit-name {
+  width: 210rpx;
+  font-size: 24rpx;
+  color: #444;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bar-wrap { flex: 1; height: 16rpx; background: #f0f0f0; border-radius: 8rpx; overflow: hidden; margin: 0 16rpx; }
+.bar { height: 100%; border-radius: 8rpx; }
+.unit-rate { width: 70rpx; text-align: right; font-size: 22rpx; color: #888; }
+
+/* 云端报告 */
+.cloud-title { font-size: 26rpx; font-weight: 600; color: #4a90d9; margin-bottom: 12rpx; }
+.cloud-body { font-size: 26rpx; color: #444; line-height: 1.7; }
+
+.foot { text-align: center; padding: 30rpx 0 40rpx; }

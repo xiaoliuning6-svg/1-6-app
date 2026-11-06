@@ -1,0 +1,19 @@
+# ===== 本地产物 / 缓存（不入库） =====
+# 预览渲染图、调试截图
+_preview/
+_shots/
+# 从云存储拉取的音频下载缓存（小程序不依赖，66MB 垃圾）
+cloud_assets/
+# 云导入暂存（JSONL 数据导出）
+cloud_import/
+
+# 微信开发者工具本地私有配置（含本机绝对路径，跨机无意义）
+project.private.config.json
+
+# 通用忽略
+*.log
+.DS_Store
+Thumbs.db
+node_modules/
+.idea/
+.vscode/

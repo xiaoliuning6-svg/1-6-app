@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/learn/learn",
+    "pages/wrong/wrong",
+    "pages/report/report",
+    "pages/teacher/teacher"
+  ],
+  "subpackages": [
+    {
+      "root": "assets",
+      "name": "audio",
+      "pages": [
+        "pages/blank/blank"
+      ]
+    },
+    {
+      "root": "assets1",
+      "name": "audio1",
+      "pages": [
+        "pages/blank/blank"
+      ]
+    },
+    {
+      "root": "assets2",
+      "name": "audio2",
+      "pages": [
+        "pages/blank/blank"
+      ]
+    },
+    {
+      "root": "assets3",
+      "name": "audio3",
+      "pages": [
+        "pages/blank/blank"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/index/index": {
+      "network": "all",
+      "packages": ["audio"]
+    }
+  },
+  "window": {
+    "navigationBarBackgroundColor": "#07c160",
+    "navigationBarTitleText": "数学提效试点",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

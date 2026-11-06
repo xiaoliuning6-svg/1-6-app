@@ -1,0 +1,44 @@
+<!-- pages/wrong/wrong.wxml -->
+<view class="page">
+  <view class="summary">
+    <text>共 {{count}} 道待巩固</text>
+    <text class="muted">点开看答案与解析</text>
+  </view>
+
+  <view class="empty" wx:if="{{count === 0}}">
+    <view class="empty-emoji">📘</view>
+    <view class="muted">还没有错题，回首页做几道练习吧</view>
+  </view>
+
+  <block wx:for="{{groups}}" wx:key="nodeId" wx:for-item="g">
+    <view class="group-head">
+      <text class="group-title">{{g.nodeTitle}}</text>
+      <text class="group-link" catchtap="gotoNode" data-nodeid="{{g.nodeId}}">重听 ›</text>
+    </view>
+
+    <view class="card wq" wx:for="{{g.items}}" wx:key="questionId" wx:for-item="w">
+      <view class="wq-main" bindtap="toggle" data-id="{{w.questionId}}">
+        <view class="stem">{{w.stem}}</view>
+        <view class="wq-meta">
+          <text class="times">错 {{w.wrongCount || 1}} 次</text>
+          <text class="arrow">{{openId === w.questionId ? '收起 ▲' : '看答案 ▼'}}</text>
+        </view>
+      </view>
+
+      <view wx:if="{{openId === w.questionId}}" class="answer">
+        <view class="answer-line">
+          <text class="answer-label">答案</text>
+          <text class="answer-text">{{w.answer}}</text>
+        </view>
+        <view class="analysis">{{w.analysis}}</view>
+        <view class="ops">
+          <view class="op-btn" bindtap="remove" data-id="{{w.questionId}}">已经会了，移出</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="foot" wx:if="{{count > 0}}">
+    <button class="btn-danger" bindtap="clear">清空本机错题</button>
+  </view>
+</view>

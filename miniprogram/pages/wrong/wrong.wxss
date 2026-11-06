@@ -1,0 +1,61 @@
+/* pages/wrong/wrong.wxss */
+.page { padding-bottom: 40rpx; }
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 26rpx 40rpx 6rpx;
+  font-size: 26rpx;
+  color: #333;
+}
+
+.empty { text-align: center; padding: 120rpx 0; }
+.empty-emoji { font-size: 80rpx; margin-bottom: 20rpx; }
+
+/* 知识点分组头 */
+.group-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 26rpx 40rpx 6rpx;
+}
+.group-title { font-size: 26rpx; font-weight: 600; color: #07c160; }
+.group-link { font-size: 24rpx; color: #4a90d9; }
+
+/* 错题卡 */
+.wq { padding: 22rpx 24rpx; }
+.stem { font-size: 28rpx; line-height: 1.65; color: #222; }
+.wq-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12rpx;
+}
+.times { font-size: 22rpx; color: #e54d42; }
+.arrow { font-size: 22rpx; color: #999; }
+
+/* 答案 */
+.answer {
+  margin-top: 18rpx;
+  padding: 18rpx 20rpx;
+  background: #f7fbff;
+  border-left: 6rpx solid #4a90d9;
+  border-radius: 8rpx;
+}
+.answer-line { margin-bottom: 8rpx; }
+.answer-label {
+  font-size: 22rpx; color: #4a90d9;
+  border: 1rpx solid #4a90d9;
+  border-radius: 6rpx;
+  padding: 0 10rpx;
+  margin-right: 12rpx;
+}
+.answer-text { font-size: 28rpx; font-weight: 600; color: #1a4d80; }
+.analysis { font-size: 24rpx; color: #555; line-height: 1.7; }
+
+.ops { margin-top: 16rpx; text-align: right; }
+.op-btn { display: inline-block; font-size: 22rpx; color: #07c160; border: 1rpx solid #07c160; border-radius: 30rpx; padding: 8rpx 22rpx; }
+
+.foot { padding: 30rpx 20rpx 40rpx; }
+.btn-danger { background: #fff; color: #e54d42; border: 1rpx solid #e54d42; border-radius: 12rpx; font-size: 28rpx; }

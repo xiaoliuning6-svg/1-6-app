@@ -1,0 +1,74 @@
+<!-- pages/report/report.wxml -->
+<view class="page">
+
+  <view class="empty" wx:if="{{empty}}">
+    <view class="empty-emoji">📊</view>
+    <view class="muted">还没有练习记录，去首页做几道题再看报告</view>
+  </view>
+
+  <block wx:else>
+    <!-- 总览：正确率只统计机器判分题，自评单独列 -->
+    <view class="card hero">
+      <block wx:if="{{stat.hasAuto}}">
+        <view class="hero-rate">{{stat.rate}}<text class="hero-pct">%</text></view>
+        <view class="hero-level">{{stat.level}}</view>
+        <view class="hero-meta">
+          自动判分 {{stat.qCorrect}}/{{stat.qTotal}} 题 · 练过 {{stat.nodesDone}} 个知识点
+        </view>
+      </block>
+      <block wx:else>
+        <view class="hero-none">暂无机器判分成绩</view>
+        <view class="hero-meta">当前记录只有解答题自评，不能算正确率</view>
+      </block>
+      <view class="hero-self" wx:if="{{stat.selfTotal}}">
+        解答题自评 {{stat.selfCorrect}}/{{stat.selfTotal}} · 学生自己勾的，不计入正确率
+      </view>
+      <view class="hero-legacy" wx:if="{{stat.legacyCount}}">
+        {{stat.legacyCount}} 节旧记录（含自评）未计入，重做一次即可更新
+      </view>
+    </view>
+
+    <!-- 薄弱知识点 -->
+    <view class="sec-head">
+      <text class="sec-title">需要补的点</text>
+      <text class="muted" wx:if="{{weak.length === 0}}">暂无错题</text>
+    </view>
+
+    <view class="card weak" wx:for="{{weak}}" wx:key="nodeId" wx:for-item="w">
+      <view class="weak-top">
+        <text class="weak-title">{{w.nodeTitle}}</text>
+        <text class="weak-times">错 {{w.times}} 次</text>
+      </view>
+      <view class="weak-sample">{{w.sample}}</view>
+      <view class="weak-ops">
+        <view class="op ghost" catchtap="gotoWeak" data-nodeid="{{w.nodeId}}">重听讲解</view>
+        <view class="op" catchtap="goPractice" data-nodeid="{{w.nodeId}}">再做一遍</view>
+      </view>
+    </view>
+
+    <!-- 单元正确率（只含机器判分题） -->
+    <view class="sec-head"><text class="sec-title">各单元掌握度</text></view>
+    <view class="card" wx:if="{{units.length}}">
+      <view class="unit-row" wx:for="{{units}}" wx:key="unit" wx:for-item="u">
+        <view class="unit-name">{{u.unit}}</view>
+        <view class="bar-wrap">
+          <view class="bar" style="width: {{u.rate}}%; background: {{u.rate >= 75 ? '#07c160' : u.rate >= 60 ? '#faad14' : '#e54d42'}}"></view>
+        </view>
+        <text class="unit-rate">{{u.rate}}%</text>
+      </view>
+    </view>
+    <view class="card" wx:else>
+      <text class="muted">暂无机器判分的单元记录（整节都是解答题时不计正确率）</text>
+    </view>
+
+    <!-- 云端报告（可选） -->
+    <view class="card cloud" wx:if="{{cloud}}">
+      <view class="cloud-title">服务端报告</view>
+      <view class="cloud-body">{{cloud.summary}}</view>
+    </view>
+
+    <view class="foot">
+      <text class="muted">{{cloudOn ? '已连云端' : '本机模式：数据只存在这台设备上'}}</text>
+    </view>
+  </block>
+</view>

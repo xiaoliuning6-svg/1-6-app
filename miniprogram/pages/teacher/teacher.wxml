@@ -1,0 +1,78 @@
+<!-- pages/teacher/teacher.wxml -->
+<view class="page">
+
+  <view class="head">
+    <view class="head-title">教师端</view>
+    <view class="head-sub">{{cloudOn ? '云端已连接，可汇总全班数据' : '本机模式：仅统计这台设备的练习'}}</view>
+  </view>
+
+  <!-- 内容覆盖 -->
+  <view class="sec-head"><text class="sec-title">内容覆盖</text></view>
+  <view class="card">
+    <view class="bk-row" wx:for="{{books}}" wx:key="key" wx:for-item="b">
+      <view class="bk-name">{{b.title}}</view>
+      <view class="bk-nums">
+        <text class="num">{{b.nodeCount}}</text><text class="unit">讲</text>
+        <text class="num">{{b.questionCount}}</text><text class="unit">题</text>
+        <text class="num">{{b.unitCount}}</text><text class="unit">单元</text>
+      </view>
+    </view>
+    <view class="bk-total">
+      合计 {{books.length}} 册 · 内容已随小程序打包，无需联网加载
+    </view>
+  </view>
+
+  <!-- 本机练习概况 -->
+  <view class="sec-head"><text class="sec-title">这台设备上的练习</text></view>
+  <view class="card">
+    <view class="local-grid">
+      <view class="lg-item">
+        <view class="lg-num">{{local.nodesDone}}<text class="lg-unit">/{{local.nodeAll}}</text></view>
+        <view class="lg-label">练过的知识点</view>
+      </view>
+      <view class="lg-item">
+        <view class="lg-num">{{local.qTotal}}</view>
+        <view class="lg-label">判分题量</view>
+      </view>
+      <view class="lg-item">
+        <view class="lg-num" wx:if="{{local.hasAuto}}">{{local.rate}}<text class="lg-unit">%</text></view>
+        <view class="lg-num lg-na" wx:else>—</view>
+        <view class="lg-label">判分正确率</view>
+      </view>
+    </view>
+    <view class="local-note">
+      解答题自评 {{local.selfCorrect}}/{{local.selfTotal}} 题，学生自己勾的，不计入正确率
+    </view>
+    <view class="local-note warn" wx:if="{{local.legacyCount}}">
+      有 {{local.legacyCount}} 节旧口径记录未计入，重做一次即可更新
+    </view>
+    <view class="copy-btn" bindtap="copyStats">复制统计到剪贴板</view>
+  </view>
+
+  <!-- 班级汇总 -->
+  <view class="sec-head"><text class="sec-title">班级汇总</text></view>
+  <view class="card">
+    <view class="tip-line" wx:if="{{!cloudOn}}">
+      未配置云环境，无法汇总全班。要让全班数据进来，需要三步：
+      注册小程序 → 开通云开发 → 把这台设备的云环境 ID 填进 app.js。详见「入库操作手册」。
+    </view>
+
+    <block wx:else>
+      <view class="empty" wx:if="{{classStats.length === 0}}">
+        <view class="muted">暂无班级数据（学生作答后自动汇总）</view>
+      </view>
+      <view class="stat-row" wx:for="{{classStats}}" wx:key="nodeId" wx:for-item="s">
+        <view class="stat-node">{{s.nodeTitle}}</view>
+        <view class="stat-count">错 {{s.wrongCount}} 人次</view>
+      </view>
+      <view class="gen-btn" bindtap="genClassReport">生成班级报告</view>
+    </block>
+  </view>
+
+  <!-- 班级报告 -->
+  <view class="card" wx:if="{{classReport}}">
+    <view class="sec-title">班级报告</view>
+    <view class="report-body">{{classReport.summary}}</view>
+    <view class="report-body" wx:if="{{classReport.advice}}">{{classReport.advice}}</view>
+  </view>
+</view>

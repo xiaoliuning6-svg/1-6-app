@@ -1,0 +1,148 @@
+<!-- pages/learn/learn.wxml -->
+<view class="page" wx:if="{{node}}">
+
+  <!-- 动画讲解：只有配了场景的知识点才有，其余知识点整块不出现，原有流程不受影响 -->
+  <view class="card anim-card" wx:if="{{animId}}">
+    <view class="card-head" bindtap="toggleAnim">
+      <view class="title">动画讲解</view>
+      <text class="anim-sub">{{animTitle}}</text>
+      <text class="fold">{{animOpen ? '收起' : '展开'}}</text>
+    </view>
+    <view wx:if="{{animOpen}}" class="anim-body">
+      <canvas type="2d" id="animCanvas" class="anim-canvas"></canvas>
+      <!-- 字幕：跟着旁白逐句走。没声也能看，这是无网时的兜底 -->
+      <view class="anim-subtitle {{animLine ? 'on' : ''}}">
+        <text>{{animLine || '　'}}</text>
+      </view>
+      <view class="anim-progress">
+        <view class="anim-progress-in" style="width:{{animProgress}}%"></view>
+      </view>
+      <view class="anim-btns">
+        <text class="anim-audio">{{audioOn ? '语音讲解' : '字幕模式'}}</text>
+        <view class="anim-btn ghost" bindtap="replayAnim">重播</view>
+        <view class="anim-btn" bindtap="togglePlay">{{playing ? '暂停' : '播放'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 小故事 -->
+  <view class="card">
+    <view class="card-head" bindtap="toggleStory">
+      <view class="title">小故事</view>
+      <text class="fold">{{storyOpen ? '收起' : '展开'}}</text>
+    </view>
+    <view wx:if="{{storyOpen}}" class="story-box">
+      <rich-text class="story {{mode === 'teach' ? 'story-big' : ''}}" nodes="{{node.storyHtml}}"></rich-text>
+      <view class="tip">易错点：{{node.wrongTip}}</view>
+    </view>
+  </view>
+
+  <!-- 讲解模式工具条 -->
+  <view class="teach-bar" wx:if="{{mode === 'teach'}}">
+    <text class="muted">{{node.questions.length}} 道题 · 点「看答案」逐题揭示</text>
+    <text class="reveal-all" bindtap="revealAll">全部显示</text>
+  </view>
+
+  <!-- 题目 -->
+  <view class="card q" wx:for="{{node.questions}}" wx:key="id" wx:for-index="idx" wx:for-item="q">
+    <view class="q-head">
+      <text class="q-no">{{idx + 1}}</text>
+      <text class="q-tag">{{q.levelText}}</text>
+      <text class="q-tag type">{{q.typeText}}</text>
+      <text wx:if="{{q.judged === 'ok'}}" class="q-mark ok">✓</text>
+      <text wx:if="{{q.judged === 'no'}}" class="q-mark no">✗</text>
+    </view>
+
+    <view class="stem">{{q.stem}}</view>
+
+    <!-- 选择题 -->
+    <view wx:if="{{q.type === 'choice'}}">
+      <view
+        wx:for="{{q.optList}}"
+        wx:for-item="opt"
+        wx:key="val"
+        class="opt {{q.selected === opt.val ? 'opt-sel' : ''}} {{submitted && opt.val === q.answer ? 'opt-right' : ''}} {{submitted && q.selected === opt.val && opt.val !== q.answer ? 'opt-wrong' : ''}}"
+        bindtap="choose"
+        data-idx="{{idx}}"
+        data-val="{{opt.val}}"
+      >{{opt.text}}</view>
+    </view>
+
+    <!-- 判断题 -->
+    <view wx:elif="{{q.type === 'judge'}}" class="judge-row">
+      <view
+        class="judge-btn {{q.selected === '对' ? 'opt-sel' : ''}} {{submitted && q.answer === '对' ? 'opt-right' : ''}} {{submitted && q.selected === '对' && q.answer !== '对' ? 'opt-wrong' : ''}}"
+        bindtap="choose" data-idx="{{idx}}" data-val="对">对</view>
+      <view
+        class="judge-btn {{q.selected === '错' ? 'opt-sel' : ''}} {{submitted && q.answer === '错' ? 'opt-right' : ''}} {{submitted && q.selected === '错' && q.answer !== '错' ? 'opt-wrong' : ''}}"
+        bindtap="choose" data-idx="{{idx}}" data-val="错">错</view>
+    </view>
+
+    <!-- 填空 -->
+    <input
+      wx:elif="{{q.type === 'fill'}}"
+      class="fill"
+      placeholder="填写答案"
+      value="{{q.selected}}"
+      disabled="{{submitted}}"
+      bindinput="onFill"
+      data-idx="{{idx}}"
+    />
+
+    <!-- 解答题：写算式 -->
+    <textarea
+      wx:else
+      class="fill solve"
+      placeholder="写出算式和答案"
+      value="{{q.selected}}"
+      disabled="{{submitted}}"
+      auto-height
+      bindinput="onFill"
+      data-idx="{{idx}}"
+    />
+
+    <!-- 答案区：讲解模式手动揭示；练习模式提交后自动显示 -->
+    <view wx:if="{{mode === 'teach' && !q.reveal}}" class="reveal-btn" bindtap="reveal" data-idx="{{idx}}">
+      看答案
+    </view>
+
+    <view wx:if="{{q.reveal}}" class="answer">
+      <view class="answer-line">
+        <text class="answer-label">答案</text>
+        <text class="answer-text">{{q.answer}}</text>
+      </view>
+      <view class="analysis">{{q.analysis}}</view>
+    </view>
+
+    <!-- 解答题自评（练习模式） -->
+    <view wx:if="{{mode === 'practice' && submitted && q.type === 'solve'}}" class="self-row">
+      <text class="muted">对照参考答案，你写对了吗？</text>
+      <view class="self-btns">
+        <view class="self-btn {{q.selfMark === 'ok' ? 'on' : ''}}" bindtap="selfJudge" data-idx="{{idx}}" data-mark="ok">写对了</view>
+        <view class="self-btn no {{q.selfMark === 'no' ? 'on' : ''}}" bindtap="selfJudge" data-idx="{{idx}}" data-mark="no">写错了</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部：提交 / 结果 -->
+  <view class="foot" wx:if="{{mode === 'practice'}}">
+    <button class="btn-primary" bindtap="submit" wx:if="{{!submitted}}">提交</button>
+    <view wx:else class="card result">
+      <view class="result-big">自动批改 {{autoCorrect}} / {{autoTotal}}</view>
+      <view wx:if="{{selfTotal > 0}}" class="result-sub">解答题自评 {{selfCorrect}} / {{selfTotal}}</view>
+      <view class="result-tip">{{autoCorrect === autoTotal && selfCorrect === selfTotal ? '全对，很稳。' : '看错的题下面的解析，再讲一遍给自己听。'}}</view>
+      <button class="btn-primary" bindtap="back">返回列表</button>
+    </view>
+  </view>
+
+  <view class="foot" wx:else>
+    <button class="btn-ghost" bindtap="back">返回列表</button>
+  </view>
+
+  <!-- 同册翻页：固定底部，一节讲完直接跳下一节，不用退回列表再滑着找 -->
+  <view class="pager">
+    <view class="pager-btn {{prevId ? '' : 'off'}}" bindtap="goPrev">‹ 上一节</view>
+    <text class="pager-pos">第 {{pos}} 节 · 本单元 {{unitPos}}/{{unitTotal}}</text>
+    <view class="pager-btn {{nextId ? '' : 'off'}}" bindtap="goNext">下一节 ›</view>
+  </view>
+</view>

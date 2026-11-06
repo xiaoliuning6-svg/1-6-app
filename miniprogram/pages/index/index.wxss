@@ -1,0 +1,194 @@
+/* pages/index/index.wxss */
+.page { padding-bottom: 40rpx; }
+
+/* 册选择（下拉） */
+.book-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 18rpx 30rpx;
+  border-bottom: 1rpx solid #eee;
+}
+.book-picker { flex: 1; min-width: 0; margin-right: 16rpx; }
+.picker-box {
+  display: flex;
+  align-items: center;
+  height: 72rpx;
+  padding: 0 24rpx;
+  background: #f5f7f6;
+  border: 1rpx solid #e4e8e6;
+  border-radius: 12rpx;
+}
+.picker-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #222;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.picker-arrow {
+  margin-left: 12rpx;
+  font-size: 24rpx;
+  color: #07c160;
+}
+
+/* 继续上次：左边一道绿边表示「接着这里」，点击直接进讲解模式。
+   放册选择下面、统计行上面 —— 选册是每次都做，但它比统计行重要得多。 */
+.resume {
+  display: flex;
+  align-items: center;
+  margin: 6rpx 20rpx 0;
+  padding: 18rpx 24rpx;
+  background: #fff;
+  border-left: 8rpx solid #07c160;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, .04);
+}
+.resume:active { opacity: .8; }
+.resume-main { flex: 1; min-width: 0; }
+.resume-label { display: block; font-size: 22rpx; color: #9aa09c; }
+.resume-title {
+  display: block;
+  margin-top: 4rpx;
+  font-size: 29rpx;
+  font-weight: 600;
+  color: #222;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.resume-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: 16rpx;
+}
+.resume-pos { font-size: 21rpx; color: #b6bbb8; }
+.resume-go { margin-top: 2rpx; font-size: 26rpx; font-weight: 600; color: #07c160; }
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18rpx 40rpx 8rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+.cloud-tag {
+  font-size: 22rpx;
+  color: #bbb;
+  border: 1rpx solid #ddd;
+  border-radius: 20rpx;
+  padding: 2rpx 14rpx;
+}
+.cloud-tag.ok { color: #07c160; border-color: #07c160; }
+
+/* 单元索引条：吸顶 + 自动折行。
+   sticky 生效前提是祖先没有 overflow:hidden —— .page 是普通 view，可用。
+   背景必须不透明，否则滚动时下面的卡片会透出来。 */
+.unit-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 12rpx 20rpx 4rpx;
+  background: #f2f4f3;
+  border-bottom: 1rpx solid #e6eae8;
+  box-sizing: border-box;
+}
+.unit-chip {
+  flex: 0 0 auto;
+  margin: 0 10rpx 8rpx 0;
+  min-width: 64rpx;
+  padding: 8rpx 20rpx;
+  font-size: 26rpx;
+  line-height: 1.25;
+  text-align: center;
+  color: #4a504c;
+  background: #fff;
+  border: 1rpx solid #e2e6e4;
+  border-radius: 999rpx;
+  box-sizing: border-box;
+}
+.unit-chip.on {
+  color: #fff;
+  font-weight: 600;
+  background: #07c160;
+  border-color: #07c160;
+}
+.unit-chip:active { opacity: .75; }
+
+/* 单元分组 */
+.unit-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 26rpx 40rpx 6rpx;
+}
+.unit-name { font-size: 28rpx; font-weight: 600; color: #07c160; }
+.unit-count { font-size: 22rpx; color: #bbb; }
+/* 一整个单元都讲过：数字变绿，扫一眼就知道这单元不用再花时间 */
+.unit-count.all { color: #07c160; }
+
+/* 知识点卡片 */
+.node {
+  display: flex;
+  align-items: center;
+  margin: 12rpx 20rpx;
+  padding: 22rpx 24rpx;
+}
+.node-main { flex: 1; min-width: 0; }
+.node-title {
+  display: flex;
+  align-items: flex-start;   /* 标题超过一行时圆点要贴第一行，居中会掉到两行之间 */
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 6rpx;
+}
+.node-text { flex: 1; min-width: 0; }
+/* 三态小圆点：灰=没动过 / 蓝=只讲过 / 绿=练过。
+   只给颜色不给文字 —— 一年级学生读不了「已掌握」这种词，老师一眼看颜色就够。 */
+.node-dot {
+  flex: 0 0 auto;
+  width: 14rpx;
+  height: 14rpx;
+  margin-top: 14rpx;   /* (30rpx 字 × 1.4 行高 − 14rpx) / 2，让圆点落在第一行正中 */
+  margin-right: 12rpx;
+  border-radius: 50%;
+  background: #dfe4e1;
+}
+.node-dot.taught { background: #4a9de8; }
+.node-dot.done { background: #07c160; }
+.done { color: #07c160; }
+.seen { color: #4a9de8; }
+
+.node-btns { display: flex; gap: 12rpx; margin-left: 16rpx; }
+.mini-btn {
+  font-size: 26rpx;
+  padding: 12rpx 26rpx;
+  border-radius: 40rpx;
+  background: #07c160;
+  color: #fff;
+  white-space: nowrap;
+}
+.mini-btn.ghost {
+  background: #fff;
+  color: #07c160;
+  border: 1rpx solid #07c160;
+}
+.mini-btn:active { opacity: .7; }
+
+.nav-row { display: flex; gap: 16rpx; padding: 30rpx 20rpx 0; }
+.nav-btn {
+  flex: 1;
+  font-size: 26rpx;
+  background: #fff;
+  color: #07c160;
+  border: 1rpx solid #07c160;
+  border-radius: 12rpx;
+}

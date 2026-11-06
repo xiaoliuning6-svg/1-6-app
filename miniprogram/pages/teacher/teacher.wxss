@@ -1,0 +1,75 @@
+/* pages/teacher/teacher.wxss */
+.page { padding-bottom: 50rpx; }
+
+.head { padding: 34rpx 40rpx 8rpx; }
+.head-title { font-size: 40rpx; font-weight: 700; }
+.head-sub { font-size: 24rpx; color: #999; margin-top: 8rpx; }
+
+.sec-head { padding: 28rpx 44rpx 4rpx; }
+.sec-title { font-size: 28rpx; font-weight: 600; color: #333; }
+
+/* 内容覆盖 */
+.bk-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid #f2f2f2;
+}
+.bk-row:last-of-type { border-bottom: none; }
+.bk-name { font-size: 28rpx; color: #222; }
+.bk-nums { display: flex; align-items: baseline; gap: 4rpx; }
+.num { font-size: 30rpx; font-weight: 600; color: #07c160; }
+.unit { font-size: 22rpx; color: #999; margin-right: 12rpx; }
+.bk-total { font-size: 22rpx; color: #bbb; margin-top: 14rpx; }
+
+/* 本机统计 */
+.local-grid { display: flex; }
+.lg-item { flex: 1; text-align: center; }
+.lg-num { font-size: 44rpx; font-weight: 700; color: #07c160; line-height: 1.2; }
+.lg-unit { font-size: 22rpx; color: #999; font-weight: 400; }
+.lg-label { font-size: 22rpx; color: #999; margin-top: 6rpx; }
+.lg-na { color: #b9bfbc; font-weight: 400; }
+.local-note {
+  margin-top: 18rpx;
+  padding: 12rpx 18rpx;
+  font-size: 22rpx;
+  line-height: 1.5;
+  color: #8a908c;
+  background: #f6f8f7;
+  border-radius: 12rpx;
+}
+.local-note.warn { color: #a06a12; background: #fff8e8; }
+.copy-btn {
+  margin-top: 24rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #07c160;
+  border: 1rpx dashed #07c160;
+  border-radius: 12rpx;
+  padding: 14rpx 0;
+}
+
+/* 班级汇总 */
+.tip-line { font-size: 24rpx; color: #8a6d3b; background: #fffbe6; padding: 20rpx; border-radius: 10rpx; line-height: 1.75; }
+.empty { text-align: center; padding: 40rpx 0; }
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+.stat-node { font-size: 26rpx; color: #333; flex: 1; margin-right: 16rpx; }
+.stat-count { font-size: 24rpx; color: #e54d42; white-space: nowrap; }
+.gen-btn {
+  margin-top: 24rpx;
+  text-align: center;
+  font-size: 26rpx;
+  background: #07c160;
+  color: #fff;
+  border-radius: 12rpx;
+  padding: 20rpx 0;
+}
+
+.report-body { font-size: 26rpx; color: #444; line-height: 1.8; margin-top: 12rpx; }

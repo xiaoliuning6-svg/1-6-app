@@ -1,0 +1,85 @@
+<!-- pages/index/index.wxml -->
+<view class="page">
+
+  <!-- 册选择：两列下拉（年级 / 上下册）。12 册摊一列要滚很久，两列两下点完 -->
+  <view class="book-bar">
+    <picker
+      class="book-picker"
+      mode="multiSelector"
+      range="{{bookRange}}"
+      value="{{bookValue}}"
+      bindchange="onPickBook"
+      bindcolumnchange="onColumnChange"
+    >
+      <view class="picker-box">
+        <text class="picker-text">{{bookLabels[bookIndex]}}</text>
+        <text class="picker-arrow">▾</text>
+      </view>
+    </picker>
+    <text class="cloud-tag {{cloudOn ? 'ok' : ''}}">{{cloudOn ? '云端已连' : '本机运行'}}</text>
+  </view>
+
+  <!-- 继续上次：一进首页最想知道的是「我上次讲到哪了」。
+       比在 43 个知识点里翻找省事得多，也是唯一一个能直接接着上课的入口。 -->
+  <view class="resume" wx:if="{{resume}}" bindtap="goResume">
+    <view class="resume-main">
+      <text class="resume-label">上次讲到</text>
+      <text class="resume-title">{{resume.title}}</text>
+    </view>
+    <view class="resume-side">
+      <text class="resume-pos">第 {{resume.pos}}/{{resume.total}} 节</text>
+      <text class="resume-go">继续 ›</text>
+    </view>
+  </view>
+
+  <view class="summary">
+    <text>共 {{nodeCount}} 个知识点 · {{questionCount}} 道练习</text>
+  </view>
+
+  <!-- 单元索引条：吸顶，自动折行不用横滑。
+       一册最多 12 个单元，1~2 字一个 chip，两行内能全放下 ——
+       一眼看全比横滑找更省事。滚动时高亮跟着走，随时知道自己在第几单元。 -->
+  <view class="unit-bar">
+    <view
+      wx:for="{{groups}}"
+      wx:key="seq"
+      wx:for-item="g"
+      class="unit-chip {{activeSeq === g.seq ? 'on' : ''}}"
+      bindtap="jumpUnit"
+      data-seq="{{g.seq}}"
+    >{{g.short}}</view>
+  </view>
+
+  <!-- 单元 → 知识点 -->
+  <block wx:for="{{groups}}" wx:key="unit" wx:for-item="g">
+    <view class="unit-head" id="u{{g.seq}}">
+      <text class="unit-name">{{g.unit}}</text>
+      <text class="unit-count {{g.taughtCount === g.nodes.length ? 'all' : ''}}" wx:if="{{g.taughtCount > 0}}">已讲 {{g.taughtCount}}/{{g.nodes.length}}</text>
+      <text class="unit-count" wx:else>{{g.nodes.length}} 讲</text>
+    </view>
+
+    <view class="card node" wx:for="{{g.nodes}}" wx:key="id" wx:for-item="n">
+      <view class="node-main">
+        <view class="node-title">
+          <text class="node-dot {{n.state}}"></text>
+          <text class="node-text">{{n.order}}. {{n.title}}</text>
+        </view>
+        <view class="muted">
+          {{n.qCount}} 道练习
+          <text wx:if="{{n.done}}" class="done"> · {{n.score}}</text>
+          <text wx:elif="{{n.seen}}" class="seen"> · 已讲</text>
+        </view>
+      </view>
+      <view class="node-btns">
+        <view class="mini-btn ghost" catchtap="goLearn" data-id="{{n.id}}" data-mode="teach">讲解</view>
+        <view class="mini-btn" catchtap="goLearn" data-id="{{n.id}}" data-mode="practice">练习</view>
+      </view>
+    </view>
+  </block>
+
+  <view class="nav-row">
+    <button class="nav-btn" bindtap="goWrong">错题本</button>
+    <button class="nav-btn" bindtap="goReport">学习报告</button>
+    <button class="nav-btn" bindtap="goTeacher">教师端</button>
+  </view>
+</view>
